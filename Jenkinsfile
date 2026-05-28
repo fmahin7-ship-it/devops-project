@@ -1,11 +1,6 @@
 pipeline {
 
-    agent {
-        docker {
-            image 'node:20'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
 
@@ -16,18 +11,39 @@ pipeline {
         }
 
         stage('Install Dependencies') {
+            agent {
+                docker {
+                    image 'node:20'
+                    args '-u root'
+                }
+            }
+
             steps {
                 sh 'npm install'
             }
         }
 
         stage('Code Validation') {
+            agent {
+                docker {
+                    image 'node:20'
+                    args '-u root'
+                }
+            }
+
             steps {
                 sh 'npm audit || true'
             }
         }
 
         stage('Run Unit Tests') {
+            agent {
+                docker {
+                    image 'node:20'
+                    args '-u root'
+                }
+            }
+
             steps {
                 sh 'npm test'
             }
