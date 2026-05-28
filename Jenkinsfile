@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+
+    agent {
+        docker {
+            image 'node:20'
+            args '-u root'
+        }
+    }
 
     stages {
 
@@ -29,7 +35,7 @@ pipeline {
 
         stage('Build Application') {
             steps {
-                sh 'echo "Application build completed"'
+                sh 'echo "Application build completed successfully"'
             }
         }
 
