@@ -1,23 +1,18 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20'
-            args '-u root'
-        }
-    }
+    agent any
 
     stages {
 
-        stage('Install Dependencies') {
+        stage('Install Dependencies & Test') {
+            agent {
+                docker {
+                    image 'node:20'
+                    args '-u root'
+                }
+            }
+
             steps {
                 sh 'npm install'
-            }
-        }
-
-
-
-        stage('Run Tests') {
-            steps {
                 sh 'npm test'
             }
         }
