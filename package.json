@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Simple DevOps Pipeline API",
   "main": "app.js",
-  "scripts": {
+ "scripts": {
     "start": "node app.js",
-    "test": "jest"
+    "test": "NODE_ENV=test jest --runInBand"
   },
   "author": "",
   "license": "ISC",
