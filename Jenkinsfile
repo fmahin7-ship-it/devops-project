@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS20'
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -10,12 +14,6 @@ pipeline {
         }
 
         stage('Install Dependencies') {
-            agent {
-                docker {
-                    image 'node:20'
-                    args '-u root'
-                }
-            }
             steps {
                 sh 'npm install'
             }
@@ -28,36 +26,18 @@ pipeline {
         }
 
         stage('Test') {
-            agent {
-                docker {
-                    image 'node:20'
-                    args '-u root'
-                }
-            }
             steps {
                 sh 'npm test'
             }
         }
 
         stage('Code Quality') {
-            agent {
-                docker {
-                    image 'node:20'
-                    args '-u root'
-                }
-            }
             steps {
                 sh 'npx eslint . || true'
             }
         }
 
         stage('Security') {
-            agent {
-                docker {
-                    image 'node:20'
-                    args '-u root'
-                }
-            }
             steps {
                 sh 'npm audit || true'
             }
@@ -76,8 +56,6 @@ pipeline {
             steps {
                 sh '''
                 docker tag devops-api devops-api:v1.0
-                echo "Release version v1.0 created successfully"
-                docker images | grep devops-api
                 '''
             }
         }
@@ -86,24 +64,9 @@ pipeline {
             steps {
                 sh '''
                 sleep 10
-
-                echo "===== Running Containers ====="
-                docker ps
-
-                echo "===== Application Health Check ====="
-                curl http://localhost:3000/products
+                curl -f http://localhost:3000/products
                 '''
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'CI/CD Pipeline completed successfully.'
-        }
-
-        failure {
-            echo 'Pipeline failed. Check logs for details.'
         }
     }
 }
