@@ -64,7 +64,12 @@ pipeline {
             steps {
                 sh '''
                 sleep 10
-                curl -f http://localhost:3000/products
+
+                echo "===== Running Containers ====="
+                docker ps
+
+                echo "===== Application Health Check ====="
+                docker exec devops-container curl -f http://localhost:3000/products
                 '''
             }
         }
